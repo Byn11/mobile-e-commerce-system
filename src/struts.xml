@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd" >
+<struts>
+	<!-- 设置项目的字符集 -->
+	<constant name="struts.i18n.encoding" value="utf-8"></constant>
+	<!-- 设置当前项目可以使用动态方法调用(DMI) -->
+	<constant name="struts.enable.DynamicMethodInvocation" value="true"></constant>
+	<!-- 配置资源文件的位置以及文件的前缀-->
+	<constant name="struts.custom.i18n.resources" value="struts"></constant>
+	<package name="shopping" namespace="/" extends="struts-default">
+		<action name="*">
+			<result>/{1}.jsp</result>
+		</action>
+		<action name="Language" class="com.test.action.LanguageAction">
+			<result>/index.jsp</result>
+		</action>
+	</package>
+	<!-- 用户 -->
+	<package name="user_package" namespace="/user" extends="shopping">
+		<action name="User" class="com.test.action.UserAction">
+			<result name="index" type="redirectAction">/index</result>
+			<result name="login">/login.jsp</result>
+			<result name="admin_select">/admin/admin_select.jsp</result>
+			<result name="user_select">/admin/user_select.jsp</result>
+			<result name="admin_add">/admin/admin_add.jsp</result>
+		</action>
+	</package>
+	<!-- 商品 -->
+	<package name="product_package" namespace="/product" extends="shopping">
+		<action name="Product" class="com.test.action.ProductAction">
+			<result name="index">/index.jsp</result>
+			<result name="product">/product.jsp</result>
+			<result type="redirectAction">${result}</result>
+			<result name="cart">/cart.jsp</result>
+			<result name="deleteOk" type="redirectAction">
+				<param name="namespace">/product</param>
+				<param name="actionName">Product!showCart</param>
+			</result>
+			<result name="product_select">/admin/product_select.jsp</result>
+			<result name="products">/products.jsp</result>
+		</action>
+	</package>
+	<!-- 管理员商品 -->
+	<package name="admin_product_package"  namespace="/admin_product" extends="shopping">
+		<action name="AdminProduct" class="com.test.action.AdmonProductAction">
+			<result name="product_add">/admin/product_add.jsp</result>
+			<result name="product_insert_ok" type="redirectAction">
+				<param name="actionName">AdminProduct!productInsertForm</param>
+				<param name="namespace">/admin_product</param>
+			</result>
+			<result name="product_update">/admin/product_update.jsp</result>
+			<result type="redirectAction">${result}</result>
+		</action>
+	</package>
+	<!-- 订单 -->
+	<package name="order_package" namespace="/order" extends="shopping">
+		<action name="Orders" class="com.test.action.OrderAction">
+			<result name="order_success" type="redirectAction">
+				<param name="namespace">/product</param>
+				<param name="actionName">Product!showCart</param>
+			</result>
+		</action>
+	</package>
+	<!-- 管理员 -->
+	<package name="admin_package" namespace="/admin" extends="shopping">
+		<action name="Admin" class="com.test.action.AdminAction">
+			<result name="input">/admin/admin_login.jsp</result>
+			<result name="admin_index">/admin/admin_index.jsp</result>
+		</action>
+	</package>
+	<!-- 投稿 -->
+	<package name="message_package" namespace="/message" extends="shopping">
+		<action name="Message" class="com.test.action.MessageAction">
+			<result name="index">/contact-us.jsp</result>
+			<result name="contact" type="redirectAction">
+				<param name="namespace">/message</param>
+				<param name="actionName">Message!selectAll</param>
+			</result>
+		
+		</action>
+	
+	</package>
+</struts>
